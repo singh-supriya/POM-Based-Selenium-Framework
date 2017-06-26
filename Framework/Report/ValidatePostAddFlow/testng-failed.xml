@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [ValidatePostAddFlow]">
+  <test name="ValidatePostAddFlow(failed)">
+    <classes>
+      <class name="src.test.ValidatePostAddFlow">
+        <methods>
+          <include name="testValidatePostAddFlow"/>
+          <include name="tearDown"/>
+          <include name="setup"/>
+        </methods>
+      </class> <!-- src.test.ValidatePostAddFlow -->
+    </classes>
+  </test> <!-- ValidatePostAddFlow(failed) -->
+</suite> <!-- Failed suite [ValidatePostAddFlow] -->

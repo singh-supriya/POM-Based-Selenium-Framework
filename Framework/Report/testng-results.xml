@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" total="1" passed="1">
+  <reporter-output>
+  </reporter-output>
+  <suite name="ValidatePostAddFlow" duration-ms="89904" started-at="2017-06-24T16:09:53Z" finished-at="2017-06-24T16:11:23Z">
+    <groups>
+    </groups>
+    <test name="ValidatePostAddFlow" duration-ms="89904" started-at="2017-06-24T16:09:53Z" finished-at="2017-06-24T16:11:23Z">
+      <class name="src.test.ValidatePostAddFlow">
+        <test-method status="PASS" signature="setup()[pri:0, instance:src.test.ValidatePostAddFlow@15975490]" name="setup" is-config="true" duration-ms="2614" started-at="2017-06-24T21:39:53Z" finished-at="2017-06-24T21:39:56Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="testValidatePostAddFlow()[pri:0, instance:src.test.ValidatePostAddFlow@15975490]" name="testValidatePostAddFlow" duration-ms="87059" started-at="2017-06-24T21:39:56Z" finished-at="2017-06-24T21:41:23Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testValidatePostAddFlow -->
+        <test-method status="PASS" signature="tearDown()[pri:0, instance:src.test.ValidatePostAddFlow@15975490]" name="tearDown" is-config="true" duration-ms="212" started-at="2017-06-24T21:41:23Z" finished-at="2017-06-24T21:41:23Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+      </class> <!-- src.test.ValidatePostAddFlow -->
+    </test> <!-- ValidatePostAddFlow -->
+  </suite> <!-- ValidatePostAddFlow -->
+</testng-results>

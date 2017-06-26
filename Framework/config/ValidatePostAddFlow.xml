@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite thread-count="5" verbose="1" name="ValidatePostAddFlow"
+       annotations="JDK">
+
+    <test name="ValidatePostAddFlow" junit="false"
+          preserve-order="true">
+        <classes>
+            <class name="src.test.ValidatePostAddFlow"/>
+        </classes>
+    </test>
+</suite> 

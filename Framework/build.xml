@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+
+<project name="Framework" default="" basedir=".">
+
+	<!-- ====== Initialize Properties ====== -->
+	
+	<property name="ws.home" value="." />
+	<property name="test.dest" value="${ws.home}/build" />
+	<property name="test.lib" value="${ws.home}/libs" />
+	<property name="test.src" value="${ws.home}/src/src" />
+	<property name="test.result" value="${ws.home}/Report" />
+
+	<!-- ====== Include required jar files and set classpath ====== -->
+	<target name="setClassPath" unless="test.classpath">
+		<path id="classpath_jars">
+			<fileset dir="${test.lib}" includes="*.jar" />
+		</path>
+		<pathconvert pathsep=":" property="test.classpath" refid="classpath_jars" />
+	</target>
+
+	<target name="init" depends="setClassPath">
+		<tstamp>
+			<format property="start.time" pattern="MM/dd/yyyy hh:mm aa" />
+		</tstamp>
+		<!--<condition property="ANT" value="${env.ANT_HOME}/bin/ant.bat" else="${env.ANT_HOME}/bin/ant">-->
+		<!--<os family="windows" />-->
+		<!--</condition>-->
+		<taskdef name="testng" classpath="${test.classpath}" classname="org.testng.TestNGAntTask" />
+	</target>
+
+	<!-- ====== Check for ANT setup ====== -->
+	<tstamp>
+		<format property="date" pattern="MMddyyyy" />
+		<format property="time" pattern="hhmmss" />
+	</tstamp>
+
+	<!-- ====== Delete old compiled classes ====== -->
+	<target name="clean">
+		<delete dir="${test.dest}" />
+		<delete dir="${ws.home}/test-output" />
+		<delete dir="${ws.home}/test-outputFailed" />
+
+		<mkdir dir="${test.result}" />
+
+
+	</target>
+
+
+
+	<!-- ====== Compile all java files ====== -->
+
+	<!-- compile -->
+	<target name="compile" depends="init, clean">
+		<delete includeemptydirs="true" quiet="true">
+			<fileset dir="${test.dest}" includes="**/*" />
+		</delete>
+		<echo message="making directory..." />
+		<mkdir dir="${test.dest}" />
+		<!-- <echo message="classpath: ${test.classpath}"/> -->
+		<echo message="compiling..." />
+		<javac debug="true" destdir="${test.dest}" includes="**/*.java, test/*.java" srcdir="${test.src}" target="1.7" classpath="${test.classpath}">
+		</javac>
+	</target>
+
+	<target name="run-tests-by-pattern" depends="compile">
+      	<run-tests-by-pattern pattern="${pattern}"/>
+	</target>
+
+	<macrodef name="run-tests-by-pattern">
+		<attribute name="pattern" />
+		
+		<sequential>
+			<testng classpath="${test.classpath}:${test.dest}" suitename="@{pattern}" outputdir="${test.result}" haltonfailure="false" useDefaultListeners="true" listeners="org.uncommons.reportng.HTMLReporter">
+				<xmlfileset dir="${ws.home}/config" includes="@{pattern}.xml" />
+				<sysproperty key="org.uncommons.reportng.escape-output" value="false" />
+				<sysproperty key="org.uncommons.reportng.title" value="My Test Report" />
+					    
+				<jvmarg value="-Xms256m" />
+				<jvmarg value="-Xmx512m" />
+				<jvmarg value="-XX:MaxPermSize=512m" />
+			</testng>
+			
+		</sequential>
+
+
+	</macrodef>
+
+
+
+
+	<target name="EmailReport">
+		<echo message="making directory..." />
+		<testng classpath="${test.classpath}:${test.dest}" suitename="EmailReport" outputdir="${test.result}" haltonfailure="true" useDefaultListeners="false" listeners="org.uncommons.reportng.HTMLReporter">
+			<xmlfileset dir="${ws.home}/config" includes="EmailReport.xml" />
+			<sysproperty key="org.uncommons.reportng.escape-output" value="true" />
+			<sysproperty key="org.uncommons.reportng.title" value="My Test Report" />
+		</testng>
+	</target>
+
+	<target name="runFailTestCases">
+		<echo message="making directory..." />
+		<testng classpath="${test.classpath}:${test.dest}" suitename="runFailTestCases" outputdir="${ws.home}/test-outputFailed" haltonfailure="false">
+			<xmlfileset dir="${ws.home}/test-output" includes="${ws.home}/test-output/testng-failed.xml" />
+
+		</testng>
+
+	</target>
+
+
+	<target name="setClass">
+		<path id="classpath_jars">
+			<pathelement path="${basedir}/" />
+			<fileset dir="${test.lib}" includes="*.jar" />
+		</path>
+		<pathconvert pathsep=":" property="test.classpath" refid="classpath_jars" />
+	</target>
+
+	<target name="NewReport" depends="setClass">
+		
+		<mkdir dir="${ws.home}/testng-xslt">
+		</mkdir>
+		
+		<echo message="Generating TestNG XSLT report..." />
+		<xslt in="${ws.home}/Report/testng-results.xml" style="${ws.home}/testng-results.xsl" out="${ws.home}/testng-xslt/index.html" processor="SaxonLiaison">
+			<param expression="${basedir}/testng-xslt/" name="testNgXslt.outputDir" />
+			<param expression="true" name="testNGXslt.sortTestCaseLinks" />
+			<param expression="FAIL,SKIP,PASS,BY_CLASS" name="testNgXslt.testDetailsFilter" />
+			<param expression="true" name="testNgXslt.showRuntimeTotals" />
+			<classpath refid="classpath_jars" />
+
+		</xslt>
+	</target>
+
+
+</project>
+
